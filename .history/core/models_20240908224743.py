@@ -9,7 +9,8 @@ class Parlamentares(models.Model):
 class Acompanhante(models.Model):
     nome = models.CharField(max_length=255)
     email = models.EmailField()
-    parlamentares = models.ForeignKey(Parlamentares, on_delete=models.CASCADE)
+    parlamentare = models.ForeignKey(Parlamentares, on_delete=models.CASCADE)
+
 
     def __str__(self) :
-        return f'nome-{self.nome} email-{self.email} parlamenta-{self.parlamentares}'
+        return f'nome-{self.nome} email-{self.email} parlamenta-{self.parlamentare}'

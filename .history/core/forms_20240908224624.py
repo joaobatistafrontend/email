@@ -7,18 +7,13 @@ class AcompanhanteForm(forms.ModelForm):
         model = Acompanhante
         fields = ['nome', 'email']
 
-    def __init__(self, *args, **kwargs):
-        # O parlamentar é passado para o formulário via argumento
-        self.parlamentar = kwargs.pop('parlamentar', None)
-        super().__init__(*args, **kwargs)
-
     def clean_email(self):
         email = self.cleaned_data.get('email')
+        parlamentares = self.cleaned_data.get('parlamentares')
 
-        # Verifica se o acompanhante já existe para este parlamentar com o mesmo email
-        if Acompanhante.objects.filter(email=email, parlamentares=self.parlamentar).exists():
-            raise ValidationError("Este e-mail já está cadastrado para este parlamentar.")
-        
+        # Verifica se já existe um acompanhante com o mesmo email associado a este parlamentar
+        if Acompanhante.objects.filter(email=email, parlamentares=parlamentares).exists():
+            raise ValidationError("Este e-mail já está associado a este parlamentar.")
         return email
 
 # from django import forms

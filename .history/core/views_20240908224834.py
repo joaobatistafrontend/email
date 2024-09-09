@@ -12,30 +12,6 @@ class IndexView(View):
         parlamentares = Parlamentares.objects.all()
         return render(request, self.template_name, {'parlamentares': parlamentares})
 
-from .models import Parlamentares, Acompanhante
-
-class EmailView(View):
-    template_name = 'email.html'
-
-    def get(self, request, pk):
-        # Obtém o parlamentar com base no pk
-        parlamentar = get_object_or_404(Parlamentares, pk=pk)
-        form = AcompanhanteForm(parlamentar=parlamentar)
-        return render(request, self.template_name, {'form': form, 'parlamentar': parlamentar})
-
-    def post(self, request, pk):
-        # Obtém o parlamentar com base no pk
-        parlamentar = get_object_or_404(Parlamentares, pk=pk)
-        form = AcompanhanteForm(request.POST, parlamentar=parlamentar)
-        
-        if form.is_valid():
-            # Associa o acompanhante ao parlamentar e salva
-            acompanhante = form.save(commit=False)
-            acompanhante.parlamentares = parlamentar
-            acompanhante.save()
-            return render(request, self.template_name, {'form': form, 'success': True, 'parlamentar': parlamentar})
-        else:
-            return render(request, self.template_name, {'form': form, 'errors': form.errors, 'parlamentar': parlamentar})
 
 
 # class EmailView(View):

@@ -8,6 +8,7 @@
 <body>
     <h1>Cadastro de Acompanhante</h1>
     
+    <!-- Exibe o nome do parlamentar selecionado -->
     <h2>Parlamentar: {{ parlamentar.nome }}</h2>
 
     <!-- Exibe mensagem de sucesso -->
@@ -29,6 +30,7 @@
     <form method="POST">
         {% csrf_token %}
         
+        <!-- Campo nome -->
         <label for="nome_id">Nome:</label>
         <input type="text" name="nome" id="nome_id" value="{{ form.nome.value|default_if_none:'' }}">
         {% if form.nome.errors %}
@@ -36,6 +38,7 @@
         {% endif %}
         <br>
 
+        <!-- Campo email -->
         <label for="email_id">Email:</label>
         <input type="email" name="email" id="email_id" value="{{ form.email.value|default_if_none:'' }}">
         {% if form.email.errors %}
