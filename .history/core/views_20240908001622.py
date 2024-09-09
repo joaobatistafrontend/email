@@ -1,0 +1,26 @@
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import View
+from .forms import AcompanhanteForm
+from .models import Parlamentares, Acompanhante
+
+class EmailView(View):
+    template_name = 'email.html'
+
+    def get(self, request, pk):
+        # Obtém o parlamentar com base no pk passado pela URL
+        parlamentar = get_object_or_404(Parlamentares, pk=pk)
+        form = AcompanhanteForm()
+        return render(request, self.template_name, {'form': form, 'parlamentar': parlamentar})
+
+    def post(self, request, pk):
+        # Obtém o parlamentar com base no pk passado pela URL
+        parlamentar = get_object_or_404(Parlamentares, pk=pk)
+        form = AcompanhanteForm(request.POST)
+        if form.is_valid():
+            acompanhante = form.save(commit=False)
+            # Associa o acompanhante ao parlamentar selecionado
+            acompanhante.parlamentares = parlamentar
+            acompanhante.save()
+            return render(request, self.template_name, {'form': form, 'success': True, 'parlamentar': parlamentar})
+        else:
+            return render(request, self.template_name, {'form': form, 'errors': form.errors, 'parlamentar': parlamentar})

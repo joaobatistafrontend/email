@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1>Cadastro</h1>
+    
+    <!-- Exibe mensagem de sucesso -->
+    {% if success %}
+        <p style="color: green;">Cadastro realizado com sucesso!</p>
+    {% endif %}
+
+    <!-- Exibe erros globais -->
+    {% if form.errors %}
+        <div style="color: red;">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field }}: {{ errors|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Campo nome -->
+        <label for="nome_id">Nome:</label>
+        <input type="text" name="nome" id="nome_id" value="{{ form.nome.value|default_if_none:'' }}">
+        {% if form.nome.errors %}
+            <div style="color: red;">{{ form.nome.errors }}</div>
+        {% endif %}
+        <br>
+
+        <!-- Campo email -->
+        <label for="email_id">Email:</label>
+        <input type="email" name="email" id="email_id" value="{{ form.email.value|default_if_none:'' }}">
+        {% if form.email.errors %}
+            <div style="color: red;">{{ form.email.errors }}</div>
+        {% endif %}
+        <br>
+        
+        <input type="submit" value="Enviar">
+    </form>
+    
+</body>
+</html>
